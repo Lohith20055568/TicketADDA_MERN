@@ -1,0 +1,38 @@
+name: Deploy Backend to Azure
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'server/**'
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install Dependencies
+        run: |
+          cd server
+          npm install
+
+      - name: Zip for deployment
+        run: |
+          cd server
+          zip -r ../server.zip .
+
+      - name: Deploy to Azure
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ticketadda
+          publish-profile: ${{ secrets.AZURE_BACKEND_PUBLISH }}
+          package: server.zip
