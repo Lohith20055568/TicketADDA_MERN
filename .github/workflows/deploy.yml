@@ -1,4 +1,4 @@
-name: Deploy MERN App to Azure
+name: Full MERN Deploy to Azure
 
 on:
   push:
@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout repo
         uses: actions/checkout@v3
 
       - name: Set up Node.js
@@ -18,34 +18,28 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install backend dependencies
+      - name: Install server dependencies
         run: |
           cd server
           npm install
-        working-directory: ./server
 
-      - name: Install frontend dependencies
+      - name: Install client dependencies and build
         run: |
           cd client
           npm install
-        working-directory: ./client
-
-      - name: Build React app
-        run: |
           npm run build
-        working-directory: ./client
 
-      - name: Move build to server/public
+      - name: Move frontend build to server/public
         run: |
           rm -rf server/public
           cp -r client/dist server/public
 
-      - name: Zip server for deployment
+      - name: Zip backend
         run: |
           cd server
           zip -r ../app.zip .
 
-      - name: Deploy to Azure Web App
+      - name: Deploy to Azure App Service
         uses: azure/webapps-deploy@v2
         with:
           app-name: ticketadda
