@@ -1,4 +1,4 @@
-name: Azure Deploy for TicketADDA
+name: Azure CI/CD
 
 on:
   push:
@@ -6,39 +6,37 @@ on:
       - main
 
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: 🔄 Checkout Repo
+      - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: ⚙️ Setup Node.js
+      - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20'
+          node-version: 18
 
-      - name: 🧱 Install & Build Frontend
+      - name: Install Client Dependencies
         run: |
           cd client
           npm install
           npm run build
-          cd ..
 
-      - name: 📦 Move React Build to server/public
+      - name: Copy Build to Server
         run: |
           rm -rf server/public
-          mv client/dist server/public
+          cp -r client/build server/public
 
-      - name: 🗜️ Zip server folder
+      - name: Install Server Dependencies
         run: |
           cd server
-          zip -r ../deploy.zip .
-          cd ..
+          npm install
 
-      - name: 🚀 Deploy to Azure Web App using Publish Profile
+      - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v2
         with:
           app-name: ticketadda
           publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }}
-          package: deploy.zip
+          package: ./server
