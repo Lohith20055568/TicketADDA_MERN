@@ -1,12 +1,13 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "description": "",
+  "description": "TicketADDA Server with React Build Support",
   "main": "server.js",
   "type": "module",
   "scripts": {
     "server": "nodemon server.js",
-    "start": "node server.js"
+    "start": "node server.js",
+    "build": "cd ../client && npm install && npm run build && cp -r ../client/build/* ../server/public/"
   },
   "keywords": [],
   "author": "",
