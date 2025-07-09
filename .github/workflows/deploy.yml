@@ -1,4 +1,4 @@
-name: Azure Node.js App Deploy
+name: Azure Deploy for TicketADDA
 
 on:
   push:
@@ -6,11 +6,11 @@ on:
       - main
 
 jobs:
-  build-and-deploy:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: 🔄 Checkout Code
+      - name: 🔄 Checkout Repo
         uses: actions/checkout@v3
 
       - name: ⚙️ Setup Node.js
@@ -18,30 +18,25 @@ jobs:
         with:
           node-version: '20'
 
-      - name: 🧱 Install Dependencies
+      - name: 🧱 Install & Build Frontend
         run: |
           cd client
           npm install
           npm run build
           cd ..
 
-      - name: 📦 Move React build to server/public
+      - name: 📦 Move React Build to server/public
         run: |
           rm -rf server/public
           mv client/dist server/public
 
-      - name: 🗜️ Zip Server Code
+      - name: 🗜️ Zip server folder
         run: |
           cd server
           zip -r ../deploy.zip .
           cd ..
 
-      - name: 🔐 Azure Login
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_PUBLISH_PROFILE }}
-
-      - name: 🚀 Deploy to Azure Web App
+      - name: 🚀 Deploy to Azure Web App using Publish Profile
         uses: azure/webapps-deploy@v2
         with:
           app-name: ticketadda
