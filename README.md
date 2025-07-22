@@ -1,7 +1,7 @@
 # Ticket Adda – A MERN-Based Movie Ticket Booking Platform
 
 **Student Name:** Venkata Satya Lohith Kumar Badam  
-**Student ID:** [Insert Student ID]  
+**Student ID:** 20055568 
 **Module:** B9IS109 – Web Development for Information Systems  
 
 ## Description
@@ -36,7 +36,7 @@ Ticket Adda is a full-stack web application developed using the MERN stack (Mong
 The application is deployed on Vercel. Visit the deployed link to access the app.
 
 ## GitHub Repository
-[Insert GitHub link here]
+(https://github.com/Lohith20055568/TicketADDA_MERN.git)
 
 ## Deployed App
-[Insert Vercel link here]
+(https://quickshow-mern-lohith-ui.vercel.app/)
